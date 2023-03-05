@@ -1,0 +1,100 @@
+﻿[
+  {
+    "udid": "44c8ae2f-4d78-4225-9d6b-c51f8042def5",
+    "date": "2018-01-01",
+    "event_id": 2,
+    "parameters": {
+      "gender": "female",
+      "age": 22,
+      "country": "South Sudan"
+    }
+  },
+  {
+    "udid": "44c8ae2f-4d78-4225-9d6b-c51f8042def5",
+    "date": "2018-01-01",
+    "event_id": 1,
+    "parameters": {}
+  },
+  {
+    "udid": "e2e27abf-7422-4d08-92c3-3f1fcb2fbe61",
+    "date": "2018-01-01",
+    "event_id": 2,
+    "parameters": {
+      "gender": "male",
+      "age": 55,
+      "country": "China"
+    }
+  },
+  {
+    "udid": "e2e27abf-7422-4d08-92c3-3f1fcb2fbe61",
+    "date": "2018-01-01",
+    "event_id": 1,
+    "parameters": {}
+  },
+  {
+    "udid": "a138b9b6-dbae-4d88-b6c8-e82796da386f",
+    "date": "2018-01-01",
+    "event_id": 2,
+    "parameters": {
+      "gender": "female",
+      "age": 43,
+      "country": "Sri Lanka"
+    }
+  },
+  {
+    "udid": "a138b9b6-dbae-4d88-b6c8-e82796da386f",
+    "date": "2018-01-01",
+    "event_id": 1,
+    "parameters": {}
+  },
+  {
+    "udid": "a138b9b6-dbae-4d88-b6c8-e82796da386f",
+    "date": "2018-01-01",
+    "event_id": 3,
+    "parameters": { "stage": 1 }
+  },
+  {
+    "udid": "a138b9b6-dbae-4d88-b6c8-e82796da386f",
+    "date": "2018-01-01",
+    "event_id": 4,
+    "parameters": {
+      "stage": 1,
+      "win": false,
+      "time": 74,
+      "income": 0
+    }
+  },
+  {
+    "udid": "bf60b518-9ea2-4611-9cd0-007b9d9bd11f",
+    "date": "2018-01-01",
+    "event_id": 2,
+    "parameters": {
+      "gender": "male",
+      "age": 51,
+      "country": "China"
+    }
+  },
+  {
+    "udid": "bf60b518-9ea2-4611-9cd0-007b9d9bd11f",
+    "date": "2018-01-01",
+    "event_id": 1,
+    "parameters": {}
+  },
+  {
+    "udid": "bf60b518-9ea2-4611-9cd0-007b9d9bd11f",
+    "date": "2018-01-01",
+    "event_id": 3,
+    "parameters": { "stage": 1 }
+  },
+  {
+    "udid": "bf60b518-9ea2-4611-9cd0-007b9d9bd11f",
+    "date": "2018-01-01",
+    "event_id": 4,
+    "parameters": {
+      "stage": 1,
+      "win": false,
+      "time": 87,
+      "income": 0
+    }
+  }
+]
