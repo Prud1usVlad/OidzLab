@@ -89,7 +89,7 @@ namespace DataAcquisition
             {
                 Id = e.Id,
                 PackName = eventVm.Parameters["name"],
-                Price = decimal.Parse(eventVm.Parameters["price"]),
+                Price = decimal.Parse(eventVm.Parameters["price"].Replace('.', ',')),
                 Currency = int.Parse(eventVm.Parameters["income"]),
             };
 
