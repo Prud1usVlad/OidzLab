@@ -1,5 +1,4 @@
 ﻿using OfficeOpenXml;
-using System.IO;
 using DataAcquisition.Models;
 
 namespace DataAcquisition.Features
@@ -17,6 +16,7 @@ namespace DataAcquisition.Features
                 worksheet.Cells["C1"].Value = "Ends";
                 worksheet.Cells["D1"].Value = "Wins";
                 worksheet.Cells["E1"].Value = "Currency";
+                worksheet.Cells["F1"].Value = "USD";
 
                 var stages = context.StageStarts
                     .GroupBy(stageStart => stageStart.Stage)
@@ -29,7 +29,8 @@ namespace DataAcquisition.Features
                                     Stage = group.Key.Value, 
                                     Ends = group.Count(), 
                                     WinAmount = group.Count(x=>(bool)x.Win),
-                                    Currency = group.Sum(x=>(bool)x.Win? x.Currency : 0)
+                                    Currency = group.Sum(x=>(bool)x.Win? x.Currency : 0),
+                                    USD = 0
                                 }), 
                         stageStart => stageStart.Stage, 
                         stageEnd => stageEnd.Stage, 
@@ -43,6 +44,7 @@ namespace DataAcquisition.Features
                     worksheet.Cells[String.Concat("C", i+2)].Value = stages[i].stageEnd.Ends;
                     worksheet.Cells[String.Concat("D", i+2)].Value = stages[i].stageEnd.WinAmount;
                     worksheet.Cells[String.Concat("E", i+2)].Value = stages[i].stageEnd.Currency;
+                    worksheet.Cells[String.Concat("F", i+2)].Value = stages[i].stageEnd.USD;
                 }
             }
             
