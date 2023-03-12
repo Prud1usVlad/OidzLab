@@ -28,7 +28,9 @@ namespace DataAcquisition
             using (ExcelPackage excelPackage = new ExcelPackage())
             {
                 //Filling file with sheets
-                excelPackage.AddStepByStepStatisticsSheet(context);
+                excelPackage
+                    .AddStepByStepStatisticsSheet(context)
+                    .AddPreliminaryStatisticsSheet(context);
                 
                 excelPackage.SaveAs(
                     new FileInfo(
