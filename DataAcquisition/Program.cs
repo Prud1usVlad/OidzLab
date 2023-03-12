@@ -1,6 +1,6 @@
-﻿using DataAcquisition.Models;
-using System.IO;
-using System.Security.Cryptography;
+﻿using DataAcquisition.Features;
+using DataAcquisition.Models;
+using OfficeOpenXml;
 
 namespace DataAcquisition
 {
@@ -24,7 +24,16 @@ namespace DataAcquisition
                 Console.WriteLine(--count + "/" + files.Length + " Files to go!");
             }
 
-            
+            //Creating excel file and filling it
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                //Filling file with sheets
+                excelPackage.AddStepByStepStatisticsSheet(context);
+                
+                excelPackage.SaveAs(
+                    new FileInfo(
+                    String.Concat(dir.ToString(), "\\Sheets.xlsx")));
+            }
             
             Console.ReadLine();
         }
