@@ -158,6 +158,7 @@ namespace DataAcquisition
                 Id = Guid.NewGuid(),
                 Date = eventVm.Date,
                 UserId = eventVm.Udid,
+                Type = eventVm.Event_id
             };
         }
     }

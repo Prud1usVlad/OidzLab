@@ -4,27 +4,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DataAcquisition.Features
 {
     public static partial class UserMetrics
     {
-        public static ExcelPackage AddDauStatisticsSheet(this ExcelPackage excelPackage, PostgresContext context)
+        public static ExcelPackage AddNewUsersStatisticsSheet(this ExcelPackage excelPackage, PostgresContext context)
         {
 
-            ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("DAU statistics");
+            ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("New Users");
 
-            worksheet.Cells["A1"].Value = "Date";
-            worksheet.Cells["B1"].Value = "DAU";
+            worksheet.Cells["A1"].Value = "Day";
+            worksheet.Cells["B1"].Value = "Users";
 
             var data = context.Events
                 .GroupBy(e => e.Date)
                 .Select(group => new
                 {
-                    Date = group.Key.Value,
-                    Users = group.GroupBy(o => o.UserId).Count()
+                    Date = group.Key,
+                    Users = group.Where(i => i.Type == 2).Count(),
                 }).ToList();
 
             for (int i = 0; i < data.Count(); i++)

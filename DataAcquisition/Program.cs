@@ -22,7 +22,7 @@ namespace DataAcquisition
             FileInfo[] files = srcDir.GetFiles("*.json");
             int count = files.Length;
 
-            //foreach ( FileInfo file in files )
+            //foreach (FileInfo file in files)
             //{
             //    Console.WriteLine("Processing file: " + file.Name + " ...");
             //    etl.ReadData(file.FullName);
@@ -38,11 +38,12 @@ namespace DataAcquisition
             {
                 //Filling file with sheets
                 excelPackage
-                    .AddDauStatistics(context)
-                    .AddMauStatistics(context)
+                    .AddNewUsersStatisticsSheet(context)
+                    .AddDauStatisticsSheet(context)
+                    .AddMauStatisticsSheet(context)
                     .AddStepByStepStatisticsSheet(context)
                     .AddPreliminaryStatisticsSheet(context);
-                    
+
 
                 excelPackage.SaveAs(
                     new FileInfo(
