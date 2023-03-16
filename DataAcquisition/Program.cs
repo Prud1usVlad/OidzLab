@@ -38,8 +38,11 @@ namespace DataAcquisition
             {
                 //Filling file with sheets
                 excelPackage
+                    .AddDauStatistics(context)
+                    .AddMauStatistics(context)
                     .AddStepByStepStatisticsSheet(context)
                     .AddPreliminaryStatisticsSheet(context);
+                    
 
                 excelPackage.SaveAs(
                     new FileInfo(
