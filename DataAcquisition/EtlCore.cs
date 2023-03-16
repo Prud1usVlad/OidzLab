@@ -30,7 +30,21 @@ namespace DataAcquisition
                 rawData = (List<EventViewModel>)serializer.Deserialize(file, typeof(List<EventViewModel>));
             }
 
-            rawData.ForEach(i => SaveData(i));
+            // rawData.ForEach(i => SaveData(i));
+            var counter = 0;
+
+            foreach (var piece in rawData)
+            {
+                SaveData(piece);
+
+                if (++counter % 100 == 0)
+                {
+                    context.SaveChanges();
+                    Console.Clear();
+                    Console.WriteLine(counter + " pieces processed. " + (rawData.Count() - counter) + " to go..." );
+                }
+            }
+                
         }
 
         private void SaveData(EventViewModel data)
@@ -63,7 +77,6 @@ namespace DataAcquisition
             var e = GetNewEvent(eventVm);
 
             context.Events.Add(e);
-            context.SaveChanges();
         }
 
         private void SaveFirstLaunch(EventViewModel eventVm)
@@ -79,7 +92,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.Users.Add(user);
-            context.SaveChanges();
         }
 
         private void SaveCurrencyPurchase(EventViewModel eventVm)
@@ -95,7 +107,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.CurrencyPurchases.Add(purchase);
-            context.SaveChanges();
         }
 
         private void SaveItemPurchase(EventViewModel eventVm)
@@ -110,7 +121,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.ItemPurchases.Add(purchase);
-            context.SaveChanges();
         }
 
         private void SaveStageStart(EventViewModel eventVm)
@@ -124,7 +134,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.StageStarts.Add(purchase);
-            context.SaveChanges();
         }
 
         private void SaveStageEnd(EventViewModel eventVm)
@@ -141,7 +150,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.StageEnds.Add(purchase);
-            context.SaveChanges();
         }
 
         private Event GetNewEvent(EventViewModel eventVm)
