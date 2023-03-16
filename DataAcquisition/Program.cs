@@ -16,13 +16,14 @@ namespace DataAcquisition
             FileInfo[] files = dir.GetFiles("*.json");
             int count = files.Length;
 
-            foreach ( FileInfo file in files )
-            {
-                Console.WriteLine("Processing file: " + file.Name + " ...");
-                etl.ReadData(file.FullName);
-                Console.WriteLine("File processed!");
-                Console.WriteLine(--count + "/" + files.Length + " Files to go!");
-            }
+            //foreach ( FileInfo file in files )
+            //{
+            //    Console.WriteLine("Processing file: " + file.Name + " ...");
+            //    etl.ReadData(file.FullName);
+            //    Console.WriteLine("File processed!");
+            //    Console.WriteLine(--count + "/" + files.Length + " Files to go!");
+            //    break;
+            //}
 
             //Creating excel file and filling it
             using (ExcelPackage excelPackage = new ExcelPackage())

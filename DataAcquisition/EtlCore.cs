@@ -1,6 +1,14 @@
-﻿using DataAcquisition.Models.DataModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DataAcquisition.Models.DataModels;
 using DataAcquisition.Models;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
+
+
 
 namespace DataAcquisition
 {
@@ -9,8 +17,8 @@ namespace DataAcquisition
         private List<EventViewModel> rawData;
         private PostgresContext context;
 
-        public EtlCore() 
-        { 
+        public EtlCore()
+        {
             context = new PostgresContext();
         }
 
@@ -22,7 +30,20 @@ namespace DataAcquisition
                 rawData = (List<EventViewModel>)serializer.Deserialize(file, typeof(List<EventViewModel>));
             }
 
-            rawData.ForEach(i => SaveData(i));
+            var counter = 0;
+
+            foreach (var piece in rawData)
+            {
+                SaveData(piece);
+
+                if (++counter % 100 == 0)
+                {
+                    context.SaveChanges();
+                    Console.Clear();
+                    Console.WriteLine(counter + " pieces processed. " + (rawData.Count() - counter) + " to go...");
+                }
+            }
+
         }
 
         private void SaveData(EventViewModel data)
@@ -30,22 +51,22 @@ namespace DataAcquisition
             switch (data.Event_id)
             {
                 case 1:
-                    SaveLaunch(data); 
+                    SaveLaunch(data);
                     break;
                 case 2:
-                    SaveFirstLaunch(data); 
+                    SaveFirstLaunch(data);
                     break;
                 case 3:
-                    SaveStageStart(data); 
+                    SaveStageStart(data);
                     break;
                 case 4:
-                    SaveStageEnd(data); 
+                    SaveStageEnd(data);
                     break;
                 case 5:
-                    SaveItemPurchase(data); 
+                    SaveItemPurchase(data);
                     break;
                 case 6:
-                    SaveCurrencyPurchase(data); 
+                    SaveCurrencyPurchase(data);
                     break;
             }
         }
@@ -55,7 +76,6 @@ namespace DataAcquisition
             var e = GetNewEvent(eventVm);
 
             context.Events.Add(e);
-            context.SaveChanges();
         }
 
         private void SaveFirstLaunch(EventViewModel eventVm)
@@ -71,7 +91,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.Users.Add(user);
-            context.SaveChanges();
         }
 
         private void SaveCurrencyPurchase(EventViewModel eventVm)
@@ -81,13 +100,12 @@ namespace DataAcquisition
             {
                 Id = e.Id,
                 PackName = eventVm.Parameters["name"],
-                Price = decimal.Parse(eventVm.Parameters["price"]),
+                Price = decimal.Parse(eventVm.Parameters["price"].Replace('.', ',')),
                 Currency = int.Parse(eventVm.Parameters["income"]),
             };
 
             context.Events.Add(e);
             context.CurrencyPurchases.Add(purchase);
-            context.SaveChanges();
         }
 
         private void SaveItemPurchase(EventViewModel eventVm)
@@ -102,7 +120,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.ItemPurchases.Add(purchase);
-            context.SaveChanges();
         }
 
         private void SaveStageStart(EventViewModel eventVm)
@@ -116,7 +133,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.StageStarts.Add(purchase);
-            context.SaveChanges();
         }
 
         private void SaveStageEnd(EventViewModel eventVm)
@@ -133,7 +149,6 @@ namespace DataAcquisition
 
             context.Events.Add(e);
             context.StageEnds.Add(purchase);
-            context.SaveChanges();
         }
 
         private Event GetNewEvent(EventViewModel eventVm)
