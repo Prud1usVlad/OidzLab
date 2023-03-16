@@ -41,6 +41,8 @@ namespace DataAcquisition
                     .AddNewUsersStatisticsSheet(context)
                     .AddDauStatisticsSheet(context)
                     .AddMauStatisticsSheet(context)
+                    .AddRevenueStatisticsSheet(context)
+                    .AddCurrencyRateStatisticsSheet(context)
                     .AddStepByStepStatisticsSheet(context)
                     .AddPreliminaryStatisticsSheet(context);
 
