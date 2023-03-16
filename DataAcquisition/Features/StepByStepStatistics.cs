@@ -7,8 +7,7 @@ namespace DataAcquisition.Features
     {
         public static ExcelPackage AddStepByStepStatisticsSheet(this ExcelPackage excelPackage, PostgresContext context)
         {
-            using (excelPackage)
-            {
+            
                 ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Step-by-step statistics");
 
                 worksheet.Cells["A1"].Value = "Stage";
@@ -46,7 +45,7 @@ namespace DataAcquisition.Features
                     worksheet.Cells[String.Concat("E", i+2)].Value = stages[i].stageEnd.Currency;
                     worksheet.Cells[String.Concat("F", i+2)].Value = stages[i].stageEnd.USD;
                 }
-            }
+            
             
             return excelPackage;
         }

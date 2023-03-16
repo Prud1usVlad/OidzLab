@@ -7,8 +7,8 @@ namespace DataAcquisition.Features
     {
         public static ExcelPackage AddPreliminaryStatisticsSheet(this ExcelPackage excelPackage, PostgresContext context)
         {
-            using (excelPackage)
-            {
+            
+            
                 ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Preliminary statistics");
 
                 worksheet.Cells["A1"].Value = "Item name";
@@ -35,7 +35,7 @@ namespace DataAcquisition.Features
                     worksheet.Cells[String.Concat("C", i + 2)].Value = items[i].Currency;
                     worksheet.Cells[String.Concat("D", i + 2)].Value = items[i].USD;
                 }
-            }
+            
 
             return excelPackage;
         }

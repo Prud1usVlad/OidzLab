@@ -12,8 +12,14 @@ namespace DataAcquisition
             var etl = new EtlCore();
 
 
-            DirectoryInfo dir = new DirectoryInfo("D:\\NURE\\ThirdCourse\\SecondSemester\\oidz\\labs\\DataAcquisition\\DataAcquisition\\Src\\"); //Assuming Test is your Folder
-            FileInfo[] files = dir.GetFiles("*.json");
+            // This will get the current PROJECT directory
+            string projectDirectory = Directory.GetParent(
+                Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+
+            DirectoryInfo srcDir = new DirectoryInfo(projectDirectory + "\\Src");
+            DirectoryInfo resultsDir = new DirectoryInfo(projectDirectory + "\\Results");
+
+            FileInfo[] files = srcDir.GetFiles("*.json");
             int count = files.Length;
 
             //foreach ( FileInfo file in files )
@@ -25,6 +31,8 @@ namespace DataAcquisition
             //    break;
             //}
 
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             //Creating excel file and filling it
             using (ExcelPackage excelPackage = new ExcelPackage())
             {
@@ -32,12 +40,14 @@ namespace DataAcquisition
                 excelPackage
                     .AddStepByStepStatisticsSheet(context)
                     .AddPreliminaryStatisticsSheet(context);
-                
+
                 excelPackage.SaveAs(
                     new FileInfo(
-                    String.Concat(dir.ToString(), "\\Sheets.xlsx")));
+                    String.Concat(resultsDir.ToString(), "\\Sheets.xlsx")));
             }
-            
+
+            Console.WriteLine(resultsDir.ToString());
+            Console.WriteLine(srcDir.ToString());
             Console.ReadLine();
         }
     }
