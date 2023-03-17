@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAcquisition.Models.DataModels;
+namespace DataAcquisition.Models;
 
-public partial class StageStart
+public partial class ItemPurchase
 {
     public Guid Id { get; set; }
 
-    public long? Stage { get; set; }
+    public string? ItemName { get; set; }
+
+    public int? Price { get; set; }
 
     public virtual Event IdNavigation { get; set; } = null!;
 }

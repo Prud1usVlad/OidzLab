@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAcquisition.Models.DataModels;
+namespace DataAcquisition.Models;
 
 public partial class User
 {
@@ -9,7 +9,7 @@ public partial class User
 
     public string? Gender { get; set; }
 
-    public long? Age { get; set; }
+    public int? Age { get; set; }
 
     public string? Country { get; set; }
 

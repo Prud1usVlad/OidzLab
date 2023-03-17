@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAcquisition.Models.DataModels
+namespace DataAcquisition.Models
 {
     public class EventViewModel
     {
-        public Guid Udid { get; set; }
-        public DateOnly Date { get; set; }
         public int Event_id { get; set; }
-        public Dictionary<string, string> Parameters { get; set; } 
+        public Guid Udid { get; set; }
+        public DateTime Date { get; set; }
+        public Dictionary<string, string> Parameters { get; set; }
     }
 }

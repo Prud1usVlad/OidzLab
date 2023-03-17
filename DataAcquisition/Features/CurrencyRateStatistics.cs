@@ -11,7 +11,7 @@ namespace DataAcquisition.Features
 {
     public static partial class CurrencyMetrics
     {
-        public static ExcelPackage AddCurrencyRateStatisticsSheet(this ExcelPackage excelPackage, PostgresContext context)
+        public static ExcelPackage AddCurrencyRateStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
 
             ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Currency rate");
@@ -28,7 +28,7 @@ namespace DataAcquisition.Features
             for (int i = 0; i < data.Count(); i++)
             {
                 worksheet.Cells[String.Concat("A", i + 2)].Value = data[i].Value;
-                worksheet.Cells[String.Concat("B", i + 2)].Value = 
+                worksheet.Cells[String.Concat("B", i + 2)].Value =
                     Utilities.GetCurrencyRate(context, data[i]);
             }
 

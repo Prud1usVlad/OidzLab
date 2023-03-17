@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAcquisition.Models.DataModels;
+namespace DataAcquisition.Models;
 
 public partial class Event
 {
     public Guid Id { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime? Date { get; set; }
 
     public Guid? UserId { get; set; }
 
-    public long? Type { get; set; }
+    public int? Type { get; set; }
 
     public virtual CurrencyPurchase? CurrencyPurchase { get; set; }
 

@@ -8,7 +8,7 @@ namespace DataAcquisition
     {
         static void Main(string[] args)
         {
-            var context = new PostgresContext();
+            var context = new OidzDbContext();
             context.ChangeTracker.AutoDetectChangesEnabled = false;
             var etl = new EtlCore();
 
@@ -24,7 +24,7 @@ namespace DataAcquisition
             int count = files.Length;
 
             var curFiles = new List<FileInfo>();
-            int start = 5;
+            int start = 1;
             int end = 6;
 
 
