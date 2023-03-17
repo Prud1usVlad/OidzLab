@@ -166,6 +166,7 @@ public partial class PostgresContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.Type).HasColumnName("type");
 
             entity.HasOne(d => d.User).WithMany(p => p.Events)
                 .HasForeignKey(d => d.UserId)

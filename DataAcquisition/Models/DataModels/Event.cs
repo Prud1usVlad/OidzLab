@@ -11,6 +11,8 @@ public partial class Event
 
     public Guid? UserId { get; set; }
 
+    public long? Type { get; set; }
+
     public virtual CurrencyPurchase? CurrencyPurchase { get; set; }
 
     public virtual ItemPurchase? ItemPurchase { get; set; }
