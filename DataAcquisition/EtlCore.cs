@@ -38,8 +38,12 @@ namespace DataAcquisition
 
                 if (++counter % 100 == 0)
                 {
-                    context.SaveChanges();
-                    Console.Clear();
+                    //context.SaveChanges();
+                    if (counter != 100)
+                    {
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Program.ClearCurrentConsoleLine();
+                    }
                     Console.WriteLine(counter + " pieces processed. " + (rawData.Count() - counter) + " to go...");
                 }
             }
@@ -80,6 +84,7 @@ namespace DataAcquisition
 
         private void SaveFirstLaunch(EventViewModel eventVm)
         {
+            // To avoid duplicate values
             if (context.Users.Find(eventVm.Udid) is null)
             {
                 var e = GetNewEvent(eventVm);
@@ -93,10 +98,6 @@ namespace DataAcquisition
 
                 context.Events.Add(e);
                 context.Users.Add(user);
-            }
-            else
-            {
-                Console.WriteLine("Duplicate detected!");
             }
         }
 

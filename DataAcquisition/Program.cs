@@ -9,6 +9,7 @@ namespace DataAcquisition
         static void Main(string[] args)
         {
             var context = new PostgresContext();
+            context.ChangeTracker.AutoDetectChangesEnabled = false;
             var etl = new EtlCore();
 
 
@@ -22,10 +23,23 @@ namespace DataAcquisition
             FileInfo[] files = srcDir.GetFiles("*.json");
             int count = files.Length;
 
-            foreach (FileInfo file in files)
+            var curFiles = new List<FileInfo>();
+            int start = 5;
+            int end = 6;
+
+
+            for (int i = start; i < end; i++)
+            {
+                curFiles.Add(files[i]);
+            }
+
+            foreach (FileInfo file in curFiles)
             {
                 Console.WriteLine("Processing file: " + file.Name + " ...");
                 etl.ReadData(file.FullName);
+                context.SaveChanges();
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                ClearCurrentConsoleLine();
                 Console.WriteLine("File processed!");
                 Console.WriteLine(--count + "/" + files.Length + " Files to go!");
             }
