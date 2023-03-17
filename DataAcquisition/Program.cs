@@ -24,9 +24,6 @@ namespace DataAcquisition
 
             foreach (FileInfo file in files)
             {
-                if (count-- == files.Length)
-                    continue;
-
                 Console.WriteLine("Processing file: " + file.Name + " ...");
                 etl.ReadData(file.FullName);
                 Console.WriteLine("File processed!");
@@ -57,6 +54,14 @@ namespace DataAcquisition
             Console.WriteLine(resultsDir.ToString());
             Console.WriteLine(srcDir.ToString());
             Console.ReadLine();
+        }
+
+        public static void ClearCurrentConsoleLine()
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
         }
     }
 }

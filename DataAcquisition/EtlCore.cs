@@ -80,17 +80,24 @@ namespace DataAcquisition
 
         private void SaveFirstLaunch(EventViewModel eventVm)
         {
-            var e = GetNewEvent(eventVm);
-            var user = new User
+            if (context.Users.Find(eventVm.Udid) is null)
             {
-                Id = eventVm.Udid,
-                Gender = eventVm.Parameters["gender"],
-                Age = int.Parse(eventVm.Parameters["age"]),
-                Country = eventVm.Parameters["country"],
-            };
+                var e = GetNewEvent(eventVm);
+                var user = new User
+                {
+                    Id = eventVm.Udid,
+                    Gender = eventVm.Parameters["gender"],
+                    Age = int.Parse(eventVm.Parameters["age"]),
+                    Country = eventVm.Parameters["country"],
+                };
 
-            context.Events.Add(e);
-            context.Users.Add(user);
+                context.Events.Add(e);
+                context.Users.Add(user);
+            }
+            else
+            {
+                Console.WriteLine("Duplicate detected!");
+            }
         }
 
         private void SaveCurrencyPurchase(EventViewModel eventVm)
