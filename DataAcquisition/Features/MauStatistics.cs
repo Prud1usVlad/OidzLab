@@ -10,7 +10,7 @@ namespace DataAcquisition.Features
 {
     public static partial class UserMetrics
     {
-        public static ExcelPackage AddMauStatisticsSheet(this ExcelPackage excelPackage, PostgresContext context)
+        public static ExcelPackage AddMauStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
 
             ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("MAU statistics");

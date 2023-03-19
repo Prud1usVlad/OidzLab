@@ -1,5 +1,6 @@
 ﻿using DataAcquisition.Features;
 using DataAcquisition.Models;
+using DataAcquisition.Util;
 using OfficeOpenXml;
 
 namespace DataAcquisition
@@ -8,7 +9,7 @@ namespace DataAcquisition
     {
         static void Main(string[] args)
         {
-            var context = new PostgresContext();
+            var context = new OidzDbContext();
             context.ChangeTracker.AutoDetectChangesEnabled = false;
             var etl = new EtlCore();
 
@@ -20,12 +21,20 @@ namespace DataAcquisition
             DirectoryInfo srcDir = new DirectoryInfo(projectDirectory + "\\Src");
             DirectoryInfo resultsDir = new DirectoryInfo(projectDirectory + "\\Results");
 
-            FileInfo[] files = srcDir.GetFiles("*.json");
+            FileInfo[] files = resultsDir.GetFiles("*.json");
             int count = files.Length;
 
+            var c = new RepetitionsRemover();
+
             var curFiles = new List<FileInfo>();
-            int start = 5;
-            int end = 6;
+            int start = 20;
+            int end = 25;
+
+            ////Removing repetitions of user data
+            //for (int i = 0; i < count; i++)
+            //{
+            //    c.RemoveRepetitions(files[i].FullName, resultsDir.ToString(), i);
+            //}
 
 
             for (int i = start; i < end; i++)

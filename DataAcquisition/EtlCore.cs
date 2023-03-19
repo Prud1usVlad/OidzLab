@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using DataAcquisition.Models.DataModels;
+using System.Transactions;
 using DataAcquisition.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
 
@@ -15,11 +18,11 @@ namespace DataAcquisition
     public class EtlCore
     {
         private List<EventViewModel> rawData;
-        private PostgresContext context;
+        private OidzDbContext context;
 
         public EtlCore()
         {
-            context = new PostgresContext();
+            context = new OidzDbContext();
         }
 
         public void ReadData(string path)
@@ -30,49 +33,83 @@ namespace DataAcquisition
                 rawData = (List<EventViewModel>)serializer.Deserialize(file, typeof(List<EventViewModel>));
             }
 
-            var counter = 0;
-
-            foreach (var piece in rawData)
+            using (var ts = CreateTransactionScope(TimeSpan.FromMinutes(60)))
             {
-                SaveData(piece);
-
-                if (++counter % 100 == 0)
+                context = null;
+                try
                 {
-                    //context.SaveChanges();
-                    if (counter != 100)
+                    context = new OidzDbContext();
+                    context.ChangeTracker.AutoDetectChangesEnabled = false;
+                    
+                    int count = 0;
+                    foreach (var piece in rawData)
                     {
-                        Console.SetCursorPosition(0, Console.CursorTop - 1);
-                        Program.ClearCurrentConsoleLine();
+                        context = SaveData(context, piece, count, 500, true);
+                        ++count;
                     }
-                    Console.WriteLine(counter + " pieces processed. " + (rawData.Count() - counter) + " to go...");
+
+                    context.SaveChanges();
+                }
+                finally
+                {
+                    if (context != null)
+                        context.Dispose();
+                }
+
+
+                ts.Complete();
+            }
+        }
+
+        private OidzDbContext SaveData(
+            OidzDbContext context,
+            EventViewModel entity, 
+            int count, 
+            int commitCount, 
+            bool recreateContext)
+        {
+            switch (entity.Event_id)
+            {
+                case 1:
+                    SaveLaunch(entity);
+                    break;
+                case 2:
+                    SaveFirstLaunch(entity);
+                    break;
+                case 3:
+                    SaveStageStart(entity);
+                    break;
+                case 4:
+                    SaveStageEnd(entity);
+                    break;
+                case 5:
+                    SaveItemPurchase(entity);
+                    break;
+                case 6:
+                    SaveCurrencyPurchase(entity);
+                    break;
+            }
+
+            if (count % commitCount == 0)
+            {
+                context.SaveChanges();
+                if (count != 0)
+                {
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Program.ClearCurrentConsoleLine();
+                }
+                Console.WriteLine(count + " pieces processed. " + (rawData.Count() - count) + " to go...");
+
+
+                if (recreateContext)
+                {
+                    context.Dispose();
+                    context = new OidzDbContext();
+                    context.ChangeTracker.AutoDetectChangesEnabled = false;
                 }
             }
 
-        }
-
-        private void SaveData(EventViewModel data)
-        {
-            switch (data.Event_id)
-            {
-                case 1:
-                    SaveLaunch(data);
-                    break;
-                case 2:
-                    SaveFirstLaunch(data);
-                    break;
-                case 3:
-                    SaveStageStart(data);
-                    break;
-                case 4:
-                    SaveStageEnd(data);
-                    break;
-                case 5:
-                    SaveItemPurchase(data);
-                    break;
-                case 6:
-                    SaveCurrencyPurchase(data);
-                    break;
-            }
+            return context;
         }
 
         private void SaveLaunch(EventViewModel eventVm)
@@ -84,21 +121,18 @@ namespace DataAcquisition
 
         private void SaveFirstLaunch(EventViewModel eventVm)
         {
-            // To avoid duplicate values
-            if (context.Users.Find(eventVm.Udid) is null)
+            var e = GetNewEvent(eventVm);
+            var user = new User
             {
-                var e = GetNewEvent(eventVm);
-                var user = new User
-                {
-                    Id = eventVm.Udid,
-                    Gender = eventVm.Parameters["gender"],
-                    Age = int.Parse(eventVm.Parameters["age"]),
-                    Country = eventVm.Parameters["country"],
-                };
+                Id = eventVm.Udid,
+                Gender = eventVm.Parameters["gender"],
+                Age = int.Parse(eventVm.Parameters["age"]),
+                Country = eventVm.Parameters["country"],
+            };
 
-                context.Events.Add(e);
-                context.Users.Add(user);
-            }
+            context.Events.Add(e);
+            context.Users.Add(user);
+
         }
 
         private void SaveCurrencyPurchase(EventViewModel eventVm)
@@ -168,6 +202,21 @@ namespace DataAcquisition
                 UserId = eventVm.Udid,
                 Type = eventVm.Event_id
             };
+        }
+
+        private void SetTransactionManagerField(string fieldName, object value)
+        {
+            typeof(TransactionManager).GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, value);
+        }
+
+        public TransactionScope CreateTransactionScope(TimeSpan timeout)
+        {
+            // or for netcore / .net5+ use these names instead:
+            //    s_cachedMaxTimeout
+            //    s_maximumTimeout
+            SetTransactionManagerField("s_cachedMaxTimeout", true);
+            SetTransactionManagerField("s_maximumTimeout", timeout);
+            return new TransactionScope(TransactionScopeOption.RequiresNew, timeout);
         }
     }
 }

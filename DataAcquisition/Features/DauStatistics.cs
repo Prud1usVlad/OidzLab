@@ -11,7 +11,7 @@ namespace DataAcquisition.Features
 {
     public static partial class UserMetrics
     {
-        public static ExcelPackage AddDauStatisticsSheet(this ExcelPackage excelPackage, PostgresContext context)
+        public static ExcelPackage AddDauStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
 
             ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("DAU statistics");

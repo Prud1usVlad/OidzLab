@@ -10,7 +10,7 @@ namespace DataAcquisition.Features
 {
     public static partial class CurrencyMetrics
     {
-        public static ExcelPackage AddRevenueStatisticsSheet(this ExcelPackage excelPackage, PostgresContext context)
+        public static ExcelPackage AddRevenueStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
 
             ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Revenue statistics");

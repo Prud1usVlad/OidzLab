@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAcquisition.Models.DataModels;
+namespace DataAcquisition.Models;
 
 public partial class CurrencyPurchase
 {
@@ -11,7 +11,7 @@ public partial class CurrencyPurchase
 
     public decimal? Price { get; set; }
 
-    public long? Currency { get; set; }
+    public int? Currency { get; set; }
 
     public virtual Event IdNavigation { get; set; } = null!;
 }
