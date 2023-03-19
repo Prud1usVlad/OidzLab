@@ -19,7 +19,6 @@ namespace DataAcquisition
     {
         private List<EventViewModel> rawData;
         private OidzDbContext context;
-        private List<Guid> cachedUsers;
 
         public EtlCore()
         {
@@ -41,12 +40,11 @@ namespace DataAcquisition
                 {
                     context = new OidzDbContext();
                     context.ChangeTracker.AutoDetectChangesEnabled = false;
-                    cachedUsers = context.Users.Select(x => x.Id).ToList();
-
+                    
                     int count = 0;
                     foreach (var piece in rawData)
                     {
-                        context = SaveData(context, piece, count, 1000, true);
+                        context = SaveData(context, piece, count, 500, true);
                         ++count;
                     }
 
@@ -123,50 +121,18 @@ namespace DataAcquisition
 
         private void SaveFirstLaunch(EventViewModel eventVm)
         {
-
-            if (!cachedUsers.Contains(eventVm.Udid))
+            var e = GetNewEvent(eventVm);
+            var user = new User
             {
-                var e = GetNewEvent(eventVm);
-                var user = new User
-                {
-                    Id = eventVm.Udid,
-                    Gender = eventVm.Parameters["gender"],
-                    Age = int.Parse(eventVm.Parameters["age"]),
-                    Country = eventVm.Parameters["country"],
-                };
+                Id = eventVm.Udid,
+                Gender = eventVm.Parameters["gender"],
+                Age = int.Parse(eventVm.Parameters["age"]),
+                Country = eventVm.Parameters["country"],
+            };
 
-                context.Events.Add(e);
-                context.Users.Add(user);
-                cachedUsers.Add(user.Id);
-                context.SaveChanges();
-            }
+            context.Events.Add(e);
+            context.Users.Add(user);
 
-            //User user = null;
-            //Event e = null;
-
-            //// To avoid duplicate values
-            //try 
-            //{
-            //    var e = GetNewEvent(eventVm);
-            //    user = new User
-            //    {
-            //        Id = eventVm.Udid,
-            //        Gender = eventVm.Parameters["gender"],
-            //        Age = int.Parse(eventVm.Parameters["age"]),
-            //        Country = eventVm.Parameters["country"],
-            //    };
-
-            //    context.Events.Add(e);
-            //    context.Users.Add(user);
-            //    context.SaveChanges();
-            //}
-            //catch (Exception ex) 
-            //{
-            //    context.Users.Local.Remove(user);
-            //    context.Events.Local.Remove()
-            //    var c1 = context.Users.Local;
-            //    var c2 = context.Events.Local;
-            //}
         }
 
         private void SaveCurrencyPurchase(EventViewModel eventVm)
