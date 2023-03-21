@@ -12,7 +12,7 @@ namespace DataAcquisition.Features
     {
         public static ExcelPackage AddRevenueStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
-
+            Console.WriteLine("Revenue statistics init");
             ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Revenue statistics");
 
             worksheet.Cells["A1"].Value = "Day";
@@ -29,10 +29,12 @@ namespace DataAcquisition.Features
 
             for (int i = 0; i < data.Count(); i++)
             {
-                worksheet.Cells[String.Concat("A", i + 2)].Value = data[i].Date;
+                worksheet.Cells[String.Concat("A", i + 2)].Value =
+                    DateOnly.FromDateTime(data[i].Date.Value).ToString();
                 worksheet.Cells[String.Concat("B", i + 2)].Value = data[i].Revenue;
             }
-
+            
+            Console.WriteLine("Revenue statistics added");
             return excelPackage;
         }
     }

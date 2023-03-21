@@ -7,6 +7,7 @@ namespace DataAcquisition.Features
     {
         public static ExcelPackage AddPreliminaryStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
+            Console.WriteLine("Preliminary statistics init");
             ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Preliminary statistics");
 
             worksheet.Cells["A1"].Value = "Item name";
@@ -34,7 +35,7 @@ namespace DataAcquisition.Features
                 worksheet.Cells[String.Concat("D", i + 2)].Value = items[i].USD;
             }
 
-
+            Console.WriteLine("Preliminary statistics added");
             return excelPackage;
         }
     }

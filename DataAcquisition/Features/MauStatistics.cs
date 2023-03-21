@@ -12,7 +12,7 @@ namespace DataAcquisition.Features
     {
         public static ExcelPackage AddMauStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
-
+            Console.WriteLine("MAU Statistics init");
             ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("MAU statistics");
 
             worksheet.Cells["A1"].Value = "Month";
@@ -28,10 +28,10 @@ namespace DataAcquisition.Features
 
             for (int i = 0; i < data.Count(); i++)
             {
-                worksheet.Cells[String.Concat("A", i + 2)].Value = data[i].Date;
+                worksheet.Cells[String.Concat("A", i + 2)].Value = data[i].Date.ToString();
                 worksheet.Cells[String.Concat("B", i + 2)].Value = data[i].Users;
             }
-
+            Console.WriteLine("Mau statistics added");
             return excelPackage;
         }
     }

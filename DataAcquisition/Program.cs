@@ -1,6 +1,7 @@
 ﻿using DataAcquisition.Features;
 using DataAcquisition.Models;
 using DataAcquisition.Util;
+using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 
 namespace DataAcquisition
@@ -11,6 +12,8 @@ namespace DataAcquisition
         {
             var context = new OidzDbContext();
             context.ChangeTracker.AutoDetectChangesEnabled = false;
+            context.Database.SetCommandTimeout((int)TimeSpan.FromMinutes(30).TotalSeconds);
+            
             var etl = new EtlCore();
 
 
@@ -37,42 +40,45 @@ namespace DataAcquisition
             //}
 
 
-            for (int i = start; i < end; i++)
+            // for (int i = start; i < end; i++)
+            // {
+            //     curFiles.Add(files[i]);
+            // }
+            //
+            // foreach (FileInfo file in curFiles)
+            // {
+            //     Console.WriteLine("Processing file: " + file.Name + " ...");
+            //     etl.ReadData(file.FullName);
+            //     context.SaveChanges();
+            //     Console.SetCursorPosition(0, Console.CursorTop - 1);
+            //     ClearCurrentConsoleLine();
+            //     Console.WriteLine("File processed!");
+            //     Console.WriteLine(--count + "/" + files.Length + " Files to go!");
+            // }
+            
+            Console.WriteLine(DateTime.Now);
+            Console.WriteLine(DateTime.Now.Date);
+            Console.WriteLine(DateTime.Now.ToString());
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            //Creating excel file and filling it
+            using (ExcelPackage excelPackage = new ExcelPackage())
             {
-                curFiles.Add(files[i]);
+                //Filling file with sheets
+                excelPackage
+                    .AddNewUsersStatisticsSheet(context)
+                    .AddDauStatisticsSheet(context)
+                    .AddMauStatisticsSheet(context)
+                    .AddRevenueStatisticsSheet(context)
+                    .AddCurrencyRateStatisticsSheet(context)
+                    .AddStepByStepStatisticsSheet(context)
+                    .AddPreliminaryStatisticsSheet(context);
+
+
+                excelPackage.SaveAs(
+                    new FileInfo(
+                    String.Concat(resultsDir.ToString(), "\\Sheets.xlsx")));
             }
-
-            foreach (FileInfo file in curFiles)
-            {
-                Console.WriteLine("Processing file: " + file.Name + " ...");
-                etl.ReadData(file.FullName);
-                context.SaveChanges();
-                Console.SetCursorPosition(0, Console.CursorTop - 1);
-                ClearCurrentConsoleLine();
-                Console.WriteLine("File processed!");
-                Console.WriteLine(--count + "/" + files.Length + " Files to go!");
-            }
-
-
-            //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            ////Creating excel file and filling it
-            //using (ExcelPackage excelPackage = new ExcelPackage())
-            //{
-            //    //Filling file with sheets
-            //    excelPackage
-            //        .AddNewUsersStatisticsSheet(context)
-            //        .AddDauStatisticsSheet(context)
-            //        .AddMauStatisticsSheet(context)
-            //        .AddRevenueStatisticsSheet(context)
-            //        .AddCurrencyRateStatisticsSheet(context)
-            //        .AddStepByStepStatisticsSheet(context)
-            //        .AddPreliminaryStatisticsSheet(context);
-
-
-            //    excelPackage.SaveAs(
-            //        new FileInfo(
-            //        String.Concat(resultsDir.ToString(), "\\Sheets.xlsx")));
-            //}
 
             Console.WriteLine(resultsDir.ToString());
             Console.WriteLine(srcDir.ToString());
