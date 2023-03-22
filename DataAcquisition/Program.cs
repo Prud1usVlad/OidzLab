@@ -11,11 +11,6 @@ namespace DataAcquisition
     {
         static void Main(string[] args)
         {
-            
-            
-            
-
-
             // This will get the current PROJECT directory
             string projectDirectory = Directory.GetParent(
                 Directory.GetCurrentDirectory()).Parent.Parent.FullName;
@@ -28,18 +23,19 @@ namespace DataAcquisition
             
             // Variables for partial file processing
             var curFiles = new List<FileInfo>();
-            int start = 25;
-            int end = 27;
+            int start = 240;
+            int end = count;
 
             //To create new files, clear from user repetitions 
             //RemoveUserRepetitions(files, resultsDir);
 
             //To upload data from chosen files
-            UploadFilesToDatabase(files, start, end);
+            //UploadFilesToDatabase(files, start, end);
             
             //To create spreadsheet with metrics
-            //GenarateMetricsSpreadsheet(resultsDir);
-            
+            Console.WriteLine(DateTime.Now);
+            GenarateMetricsSpreadsheet(resultsDir);
+            Console.WriteLine(DateTime.Now);
 
             Console.ReadLine();
         }

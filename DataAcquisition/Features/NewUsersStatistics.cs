@@ -19,11 +19,12 @@ namespace DataAcquisition.Features
             worksheet.Cells["B1"].Value = "Users";
 
             var data = context.Events
+                .Where(i => i.Type == 2)
                 .GroupBy(e => e.Date)
                 .Select(group => new
                 {
                     Date = group.Key,
-                    Users = group.Where(i => i.Type == 2).Count(),
+                    Users = group.Count(),
                 }).ToList();
 
             for (int i = 0; i < data.Count(); i++)
