@@ -17,20 +17,33 @@ namespace DataAcquisition.Features
             worksheet.Cells["E1"].Value = "Currency";
             worksheet.Cells["F1"].Value = "USD";
 
+            var eventUSDRate = context.Events
+                .Where(x => x.Type == 6)
+                .Select( x => new
+                {
+                    EventId = x.Id,
+                    Rate = (decimal)x.CurrencyPurchase.Currency / x.CurrencyPurchase.Price
+                });
+            
             var stages = context.StageStarts
                 .GroupBy(stageStart => stageStart.Stage)
                 .Select(group => new { Stage = group.Key.Value, Starts = group.Count() })
                 .Join(
                     context.StageEnds
-                            .GroupBy(stageEnd => stageEnd.Stage)
-                            .Select(group => new
-                            {
-                                Stage = group.Key.Value,
-                                Ends = group.Count(),
-                                WinAmount = group.Count(x => (bool)x.Win),
-                                Currency = group.Sum(x => (bool)x.Win ? x.Currency : 0),
-                                USD = 0
-                            }),
+                        .GroupBy(stageEnd => stageEnd.Stage)
+                        .Select(group => new
+                        {
+                            Stage = group.Key.Value,
+                            Ends = group.Count(),
+                            WinAmount = group.Count(x => (bool)x.Win),
+                            Currency = group.Sum(x => (bool)x.Win ? x.Currency : 0),
+                            USD = group.Sum(
+                                x => (bool)x.Win 
+                                    ? x.Currency * eventUSDRate.FirstOrDefault(Event => Event.EventId
+                                        .Equals(x.IdNavigation.Id)).Rate
+                                    : 0
+                                )
+                        }),
                     stageStart => stageStart.Stage,
                     stageEnd => stageEnd.Stage,
                     (stageStart, stageEnd) => new { stageStart, stageEnd })

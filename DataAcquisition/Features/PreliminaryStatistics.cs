@@ -15,6 +15,14 @@ namespace DataAcquisition.Features
             worksheet.Cells["C1"].Value = "Currency";
             worksheet.Cells["D1"].Value = "USD";
 
+            var eventUSDRate = context.Events
+                .Where(x => x.Type == 6)
+                .Select( x => new
+                    {
+                        EventId = x.Id,
+                        Rate = (decimal)x.CurrencyPurchase.Currency / x.CurrencyPurchase.Price
+                    });
+
             var items = context.ItemPurchases
                 .GroupBy(purchase => purchase.ItemName)
                 .Select(group =>
@@ -23,7 +31,10 @@ namespace DataAcquisition.Features
                         ItemName = group.Key,
                         ItemAmount = group.Count(),
                         Currency = group.Sum(x => x.Price),
-                        USD = 0
+                        USD = group.Sum(
+                            x => x.Price * eventUSDRate
+                                .FirstOrDefault(Event => Event.EventId
+                                    .Equals(x.IdNavigation.Id)).Rate )
                     })
                 .ToList();
 
