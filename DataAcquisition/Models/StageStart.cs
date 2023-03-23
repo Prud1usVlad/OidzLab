@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DataAcquisition.Models;
+﻿namespace DataAcquisition.Models;
 
 public partial class StageStart
 {
