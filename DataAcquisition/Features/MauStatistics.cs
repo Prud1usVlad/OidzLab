@@ -7,7 +7,7 @@ namespace DataAcquisition.Features
     {
         public static ExcelPackage AddMauStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
-            Console.WriteLine("MAU Statistics init");
+            Console.WriteLine("MAU statistics init");
             ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("MAU statistics");
 
             worksheet.Cells["A1"].Value = "Month";

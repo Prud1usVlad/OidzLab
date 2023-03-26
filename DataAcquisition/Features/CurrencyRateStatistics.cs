@@ -28,7 +28,7 @@ namespace DataAcquisition.Features
                     Utilities.GetCurrencyRate(context, data[i]);
             }
             
-            Console.WriteLine("Currency rate statistics added");
+            Console.WriteLine("Currency Rate statistics added");
             return excelPackage;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using OfficeOpenXml;
 using DataAcquisition.Models;
+using DataAcquisition.Util;
 
 namespace DataAcquisition.Features
 {
@@ -14,15 +15,7 @@ namespace DataAcquisition.Features
             worksheet.Cells["B1"].Value = "Item amount";
             worksheet.Cells["C1"].Value = "Currency";
             worksheet.Cells["D1"].Value = "USD";
-
-            var eventUSDRate = context.Events
-                .Where(x => x.Type == 6)
-                .Select( x => new
-                    {
-                        EventId = x.Id,
-                        Rate = (decimal)x.CurrencyPurchase.Currency / x.CurrencyPurchase.Price
-                    });
-
+            
             var items = context.ItemPurchases
                 .GroupBy(purchase => purchase.ItemName)
                 .Select(group =>
@@ -31,11 +24,9 @@ namespace DataAcquisition.Features
                         ItemName = group.Key,
                         ItemAmount = group.Count(),
                         Currency = group.Sum(x => x.Price),
-                        USD = group.Sum(
-                            x => x.Price * eventUSDRate
-                                .FirstOrDefault(Event => Event.EventId
-                                    .Equals(x.IdNavigation.Id)).Rate )
+                        USD = group.Sum(x => x.Price) * Utilities.GetEventUSDRate(context)
                     })
+                .OrderBy(x=>x.ItemName)
                 .ToList();
 
             for (int i = 0; i < items.Count(); i++)
