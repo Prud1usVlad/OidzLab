@@ -48,12 +48,12 @@ namespace DataAcquisition
 
         public static void RemoveUserRepetitions(FileInfo[] files, DirectoryInfo resultsDir)
         {
-            var c = new RepetitionsRemover();
-            
-            for (int i = 0; i < files.Length; i++)
-            {
-                c.RemoveRepetitions(files[i].FullName, resultsDir.ToString(), i);
-            }
+            // var c = new RepetitionsRemover();
+            //
+            // for (int i = 0; i < files.Length; i++)
+            // {
+            //     c.RemoveRepetitions(files[i].FullName, resultsDir.ToString(), i);
+            // }
         }
 
         public static void UploadFilesToDatabase(FileInfo[] files, int startIndex, int endIndex)
@@ -85,15 +85,15 @@ namespace DataAcquisition
             {
                 //Filling file with sheets
                 excelPackage
-                    .AddNewUsersStatisticsSheet(context)
-                    .AddDauStatisticsSheet(context)
-                    .AddMauStatisticsSheet(context)
-                    .AddRevenueStatisticsSheet(context)
-                    .AddCurrencyRateStatisticsSheet(context)
-                    .AddStepByStepStatisticsSheet(context)
-                    .AddPreliminaryStatisticsSheet(context);
-
-
+                    // .AddNewUsersStatisticsSheet(context)
+                    // .AddDauStatisticsSheet(context)
+                    // .AddMauStatisticsSheet(context)
+                    // .AddRevenueStatisticsSheet(context)
+                    // .AddCurrencyRateStatisticsSheet(context)
+                    // .AddStepByStepStatisticsSheet(context)
+                    // .AddPreliminaryStatisticsSheet(context)
+                    .AddItemsPerDayStatisticsSheet(context);
+                
                 excelPackage.SaveAs(
                     new FileInfo(
                         String.Concat(resultsDir.ToString(), "\\Sheets.xlsx")));
