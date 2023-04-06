@@ -38,6 +38,7 @@ namespace DataAcquisition.Features
             }
 
             Console.WriteLine("Preliminary statistics added");
+            
             return excelPackage;
         }
     }

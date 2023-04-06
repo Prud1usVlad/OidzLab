@@ -35,6 +35,7 @@ namespace DataAcquisition.Features
             }
 
             Console.WriteLine("Items-per-day statistics added");
+            
             return excelPackage;
         }
     }

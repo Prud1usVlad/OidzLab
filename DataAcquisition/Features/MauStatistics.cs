@@ -19,14 +19,17 @@ namespace DataAcquisition.Features
                 {
                     Date = group.Key,
                     Users = group.GroupBy(o => o.UserId).Count()
-                }).ToList();
+                })
+                .ToList();
 
             for (int i = 0; i < data.Count(); i++)
             {
                 worksheet.Cells[String.Concat("A", i + 2)].Value = data[i].Date.ToString();
                 worksheet.Cells[String.Concat("B", i + 2)].Value = data[i].Users;
             }
+            
             Console.WriteLine("Mau statistics added");
+            
             return excelPackage;
         }
     }
