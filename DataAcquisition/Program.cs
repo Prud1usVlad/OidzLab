@@ -1,4 +1,5 @@
 ﻿using DataAcquisition.Features;
+using DataAcquisition.Features.Statistics_by_genders;
 using DataAcquisition.Models;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -35,7 +36,7 @@ namespace DataAcquisition
             GenarateMetricsSpreadsheet(resultsDir);
             Console.WriteLine(DateTime.Now);
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         public static void ClearCurrentConsoleLine()
@@ -85,6 +86,7 @@ namespace DataAcquisition
             {
                 //Filling file with sheets
                 excelPackage
+                    // Default
                     // .AddNewUsersStatisticsSheet(context)
                     // .AddDauStatisticsSheet(context)
                     // .AddMauStatisticsSheet(context)
@@ -92,9 +94,17 @@ namespace DataAcquisition
                     // .AddCurrencyRateStatisticsSheet(context)
                     // .AddStepByStepStatisticsSheet(context)
                     // .AddPreliminaryStatisticsSheet(context)
-                    .AddItemsPerDayStatisticsSheet(context);
-                
-                excelPackage.SaveAs(
+                    // .AddItemsPerDayStatisticsSheet(context)
+                    // By gender
+                    .AddNewUsersByGenderStatisticsSheet(context)
+                    .AddDauByGenderStatisticsSheet(context)
+                    .AddMauByGenderStatisticsSheet(context)
+                    .AddRevenueByGenderStatisticsSheet(context)
+                    .AddStepByStepByGenderStatisticsSheet(context)
+                    .AddPreliminaryByGenderStatisticsSheet(context)
+                    .AddItemsPerDayByGenderStatisticsSheet(context);
+
+                    excelPackage.SaveAs(
                     new FileInfo(
                         String.Concat(resultsDir.ToString(), "\\Sheets.xlsx")));
             }

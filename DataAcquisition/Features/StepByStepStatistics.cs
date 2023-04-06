@@ -49,6 +49,7 @@ namespace DataAcquisition.Features
             }
 
             Console.WriteLine("Step-by-step statistics added");
+            
             return excelPackage;
         }
     }

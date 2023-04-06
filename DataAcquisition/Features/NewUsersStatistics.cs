@@ -20,7 +20,9 @@ namespace DataAcquisition.Features
                 {
                     Date = group.Key,
                     Users = group.Count(),
-                }).ToList();
+                })
+                .OrderBy(x=>x.Date)
+                .ToList();
 
             for (int i = 0; i < data.Count(); i++)
             {
@@ -30,6 +32,7 @@ namespace DataAcquisition.Features
             }
             
             Console.WriteLine("New users statistics added");
+            
             return excelPackage;
         }
     }

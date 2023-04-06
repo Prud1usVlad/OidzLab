@@ -19,7 +19,9 @@ namespace DataAcquisition.Features
                 {
                     Date = group.Key,
                     Users = group.GroupBy(o => o.UserId).Count()
-                }).ToList();
+                })
+                .OrderBy(x=> x.Date.ToString())
+                .ToList();
 
             for (int i = 0; i < data.Count(); i++)
             {
@@ -29,6 +31,7 @@ namespace DataAcquisition.Features
             }
 
             Console.WriteLine("DAU statistics added");
+            
             return excelPackage;
         }
     }
