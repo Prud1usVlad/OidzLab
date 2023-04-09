@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Statistics by age" />
     <Folder Include="Results\" />
   </ItemGroup>
 

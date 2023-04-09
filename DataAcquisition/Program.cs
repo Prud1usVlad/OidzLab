@@ -1,4 +1,5 @@
 ﻿using DataAcquisition.Features;
+using DataAcquisition.Features.Statistics_by_age;
 using DataAcquisition.Features.Statistics_by_genders;
 using DataAcquisition.Models;
 using Microsoft.EntityFrameworkCore;
@@ -96,13 +97,30 @@ namespace DataAcquisition
                     // .AddPreliminaryStatisticsSheet(context)
                     // .AddItemsPerDayStatisticsSheet(context)
                     // By gender
-                    .AddNewUsersByGenderStatisticsSheet(context)
-                    .AddDauByGenderStatisticsSheet(context)
-                    .AddMauByGenderStatisticsSheet(context)
-                    .AddRevenueByGenderStatisticsSheet(context)
-                    .AddStepByStepByGenderStatisticsSheet(context)
-                    .AddPreliminaryByGenderStatisticsSheet(context)
-                    .AddItemsPerDayByGenderStatisticsSheet(context);
+                    // .AddNewUsersByGenderStatisticsSheet(context)
+                    // .AddDauByGenderStatisticsSheet(context)
+                    // .AddMauByGenderStatisticsSheet(context)
+                    // .AddRevenueByGenderStatisticsSheet(context)
+                    // .AddStepByStepByGenderStatisticsSheet(context)
+                    // .AddPreliminaryByGenderStatisticsSheet(context)
+                    // .AddItemsPerDayByGenderStatisticsSheet(context)
+                    // By age
+                     .AddNewUsersByAgeStatisticsSheet(context)
+                    // .AddDauByAgeStatisticsSheet(context)
+                    // .AddMauByAgeStatisticsSheet(context)
+                     .AddRevenueByAgeStatisticsSheet(context)
+                     .AddStepByStepByAgeStatisticsSheet(context)
+                     .AddPreliminaryByAgeStatisticsSheet(context)
+                     .AddItemsPerDayByAgeStatisticsSheet(context)
+                    // By country
+                    // .AddNewUsersByCountryStatisticsSheet(context)
+                    // .AddDauByCountryStatisticsSheet(context)
+                    // .AddMauByCountryStatisticsSheet(context)
+                    // .AddRevenueByCountryStatisticsSheet(context)
+                    // .AddStepByStepByCountryStatisticsSheet(context)
+                    // .AddPreliminaryByCountryStatisticsSheet(context)
+                    // .AddItemsPerDayByCountryStatisticsSheet(context)
+                    ;
 
                     excelPackage.SaveAs(
                     new FileInfo(

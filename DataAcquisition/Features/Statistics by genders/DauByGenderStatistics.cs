@@ -37,6 +37,7 @@ namespace DataAcquisition.Features.Statistics_by_genders
             }
 
             Console.WriteLine("DAU by gender statistics added");
+            
             return excelPackage;
         }
     }
