@@ -1,5 +1,6 @@
 ﻿using DataAcquisition.Features;
 using DataAcquisition.Features.Statistics_by_age;
+using DataAcquisition.Features.Statistics_by_countries;
 using DataAcquisition.Features.Statistics_by_genders;
 using DataAcquisition.Models;
 using Microsoft.EntityFrameworkCore;
@@ -105,21 +106,21 @@ namespace DataAcquisition
                     // .AddPreliminaryByGenderStatisticsSheet(context)
                     // .AddItemsPerDayByGenderStatisticsSheet(context)
                     // By age
-                     .AddNewUsersByAgeStatisticsSheet(context)
+                     // .AddNewUsersByAgeStatisticsSheet(context)
                     // .AddDauByAgeStatisticsSheet(context)
                     // .AddMauByAgeStatisticsSheet(context)
-                     .AddRevenueByAgeStatisticsSheet(context)
-                     .AddStepByStepByAgeStatisticsSheet(context)
-                     .AddPreliminaryByAgeStatisticsSheet(context)
-                     .AddItemsPerDayByAgeStatisticsSheet(context)
+                     // .AddRevenueByAgeStatisticsSheet(context)
+                     // .AddStepByStepByAgeStatisticsSheet(context)
+                     // .AddPreliminaryByAgeStatisticsSheet(context)
+                     // .AddItemsPerDayByAgeStatisticsSheet(context)
                     // By country
-                    // .AddNewUsersByCountryStatisticsSheet(context)
-                    // .AddDauByCountryStatisticsSheet(context)
-                    // .AddMauByCountryStatisticsSheet(context)
-                    // .AddRevenueByCountryStatisticsSheet(context)
-                    // .AddStepByStepByCountryStatisticsSheet(context)
-                    // .AddPreliminaryByCountryStatisticsSheet(context)
-                    // .AddItemsPerDayByCountryStatisticsSheet(context)
+                    .AddNewUsersByCountriesStatisticsSheet(context)
+                    .AddDauByCountriesStatisticsSheet(context)
+                    .AddMauByCountriesStatisticsSheet(context)
+                    .AddRevenueByCountriesStatisticsSheet(context)
+                    .AddStepByStepByCountriesStatisticsSheet(context)
+                    .AddPreliminaryByCountriesStatisticsSheet(context)
+                    .AddItemsPerDayByCountriesStatisticsSheet(context)
                     ;
 
                     excelPackage.SaveAs(

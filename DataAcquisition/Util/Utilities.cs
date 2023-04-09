@@ -12,6 +12,8 @@ namespace DataAcquisition.Util
         private static readonly decimal? _usdRate = null;
 
         private static List<int>? _ageGroups;
+        
+        private static List<string?> _countries;
 
         private static readonly List<char> _alphabet = new List<char>();
 
@@ -80,6 +82,19 @@ namespace DataAcquisition.Util
             }
 
             return _ageGroups;
+        }
+        
+        public static List<string?> GetCountries(OidzDbContext context)
+        {
+            if (_countries == null)
+            {
+                _countries = context.Users
+                    .GroupBy(x => x.Country)
+                    .Select(x => x.Key)
+                    .ToList();
+            }
+
+            return _countries;
         }
 
         public static string GetCellColumnAddress(int columnNumber)
