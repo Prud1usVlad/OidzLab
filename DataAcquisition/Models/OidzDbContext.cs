@@ -27,7 +27,7 @@ public partial class OidzDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=178.165.88.5\\DEV;Initial Catalog=OidzDb;User ID=user1;Password=1111;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=87.244.185.179\\DEV;Initial Catalog=OidzDb;User ID=user1;Password=1111;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

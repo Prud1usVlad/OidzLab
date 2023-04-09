@@ -116,8 +116,11 @@ namespace DataAcquisition.Util
             }
             else
             {
-                cellColumnAddress.Append(_alphabet[columnNumber / _alphabetLenght - 1].ToString());
-                cellColumnAddress.Append(_alphabet[columnNumber % _alphabetLenght - 1].ToString());
+                while (columnNumber > 0) {
+                    int remainder = (columnNumber - 1) % 26;
+                    cellColumnAddress.Insert(0, (char)('A' + remainder));
+                    columnNumber = (columnNumber - remainder) / 26;
+                }
             }
             
             return cellColumnAddress.ToString();

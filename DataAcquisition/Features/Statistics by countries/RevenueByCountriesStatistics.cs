@@ -54,7 +54,7 @@ namespace DataAcquisition.Features.Statistics_by_countries
                 {
                     worksheet.Cells[String.Concat(
                             Utilities.GetCellColumnAddress(countries.IndexOf(country.Country)+2), 
-                            (i + 3).ToString())]
+                            (i + 2).ToString())]
                         .Value = country.Revenue;
                 }
             }
