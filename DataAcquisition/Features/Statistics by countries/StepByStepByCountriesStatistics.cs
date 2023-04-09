@@ -19,9 +19,9 @@ namespace DataAcquisition.Features.Statistics_by_countries
             worksheet.Cells["A1:A2"].Merge = true;
             worksheet.Cells["B1"].Value = "Starts";
             worksheet.Cells[String.Concat(
-                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 0), "2"),
+                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 0), "1"),
                 ":",
-                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 1), "2")
+                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 1), "1")
             )].Merge = true;
             for (int i = 0; i < countryAmount; i++)
             {
@@ -31,9 +31,9 @@ namespace DataAcquisition.Features.Statistics_by_countries
 
             worksheet.Cells[String.Concat(Utilities.GetCellColumnAddress(countryAmount * 1 + 2), "1")].Value = "Ends";
             worksheet.Cells[String.Concat(
-                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 1), "2"),
+                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 1), "1"),
                 ":",
-                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 2), "2")
+                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 2), "1")
             )].Merge = true;
             for (int i = 0; i < countryAmount; i++)
             {
@@ -43,9 +43,9 @@ namespace DataAcquisition.Features.Statistics_by_countries
 
             worksheet.Cells[String.Concat(Utilities.GetCellColumnAddress(countryAmount * 2 + 2), "1")].Value = "Wins";
             worksheet.Cells[String.Concat(
-                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 2), "2"),
+                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 2), "1"),
                 ":",
-                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 3), "2")
+                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 3), "1")
             )].Merge = true;
             for (int i = 0; i < countryAmount; i++)
             {
@@ -56,9 +56,9 @@ namespace DataAcquisition.Features.Statistics_by_countries
             worksheet.Cells[String.Concat(Utilities.GetCellColumnAddress(countryAmount * 3 + 2), "1")].Value =
                 "Currency";
             worksheet.Cells[String.Concat(
-                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 3), "2"),
+                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 3), "1"),
                 ":",
-                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 4), "2")
+                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 4), "1")
             )].Merge = true;
             for (int i = 0; i < countryAmount; i++)
             {
@@ -68,9 +68,9 @@ namespace DataAcquisition.Features.Statistics_by_countries
 
             worksheet.Cells[String.Concat(Utilities.GetCellColumnAddress(countryAmount * 4 + 2), "1")].Value = "USD";
             worksheet.Cells[String.Concat(
-                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 4), "2"),
+                String.Concat(Utilities.GetCellColumnAddress(2 + countryAmount * 4), "1"),
                 ":",
-                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 5), "2")
+                String.Concat(Utilities.GetCellColumnAddress(1 + countryAmount * 5), "1")
             )].Merge = true;
             for (int i = 0; i < countryAmount; i++)
             {
