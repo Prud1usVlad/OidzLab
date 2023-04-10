@@ -10,5 +10,9 @@ public partial class User
 
     public string? Country { get; set; }
 
+    public bool? IsCheater { get; set; }
+
+    public int? Cluster { get; set; }
+
     public virtual ICollection<Event> Events { get; } = new List<Event>();
 }
