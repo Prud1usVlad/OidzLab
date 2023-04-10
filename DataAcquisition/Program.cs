@@ -1,4 +1,7 @@
 ﻿using DataAcquisition.Features;
+using DataAcquisition.Features.Statistics_by_age;
+using DataAcquisition.Features.Statistics_by_countries;
+using DataAcquisition.Features.Statistics_by_genders;
 using DataAcquisition.Models;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -36,7 +39,7 @@ namespace DataAcquisition
             GenarateMetricsSpreadsheet(resultsDir);
             Console.WriteLine(DateTime.Now);
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         public static void ClearCurrentConsoleLine()
@@ -49,12 +52,12 @@ namespace DataAcquisition
 
         public static void RemoveUserRepetitions(FileInfo[] files, DirectoryInfo resultsDir)
         {
-            var c = new RepetitionsRemover();
-            
-            for (int i = 0; i < files.Length; i++)
-            {
-                c.RemoveRepetitions(files[i].FullName, resultsDir.ToString(), i);
-            }
+            // var c = new RepetitionsRemover();
+            //
+            // for (int i = 0; i < files.Length; i++)
+            // {
+            //     c.RemoveRepetitions(files[i].FullName, resultsDir.ToString(), i);
+            // }
         }
 
         public static void UploadFilesToDatabase(FileInfo[] files, int startIndex, int endIndex)
@@ -86,16 +89,42 @@ namespace DataAcquisition
             {
                 //Filling file with sheets
                 excelPackage
-                    .AddNewUsersStatisticsSheet(context)
-                    .AddDauStatisticsSheet(context)
-                    .AddMauStatisticsSheet(context)
-                    .AddRevenueStatisticsSheet(context)
-                    .AddCurrencyRateStatisticsSheet(context)
-                    .AddStepByStepStatisticsSheet(context)
-                    .AddPreliminaryStatisticsSheet(context);
+                    // Default
+                    // .AddNewUsersStatisticsSheet(context)
+                    // .AddDauStatisticsSheet(context)
+                    // .AddMauStatisticsSheet(context)
+                    // .AddRevenueStatisticsSheet(context)
+                    // .AddCurrencyRateStatisticsSheet(context)
+                    // .AddStepByStepStatisticsSheet(context)
+                    // .AddPreliminaryStatisticsSheet(context)
+                    // .AddItemsPerDayStatisticsSheet(context)
+                    // By gender
+                    // .AddNewUsersByGenderStatisticsSheet(context)
+                    // .AddDauByGenderStatisticsSheet(context)
+                    // .AddMauByGenderStatisticsSheet(context)
+                    // .AddRevenueByGenderStatisticsSheet(context)
+                    // .AddStepByStepByGenderStatisticsSheet(context)
+                    // .AddPreliminaryByGenderStatisticsSheet(context)
+                    // .AddItemsPerDayByGenderStatisticsSheet(context)
+                    // By age
+                    //.AddNewUsersByAgeStatisticsSheet(context)
+                    //.AddDauByAgeStatisticsSheet(context)
+                    //.AddMauByAgeStatisticsSheet(context)
+                    //.AddRevenueByAgeStatisticsSheet(context)
+                    //.AddStepByStepByAgeStatisticsSheet(context)
+                    //.AddPreliminaryByAgeStatisticsSheet(context)
+                    //.AddItemsPerDayByAgeStatisticsSheet(context)
+                    // By country
+                    .AddNewUsersByCountriesStatisticsSheet(context)
+                    .AddDauByCountriesStatisticsSheet(context)
+                    .AddMauByCountriesStatisticsSheet(context)
+                    .AddRevenueByCountriesStatisticsSheet(context)
+                    .AddStepByStepByCountriesStatisticsSheet(context)
+                    .AddPreliminaryByCountriesStatisticsSheet(context)
+                    .AddItemsPerDayByCountriesStatisticsSheet(context)
+                    ;
 
-
-                excelPackage.SaveAs(
+                    excelPackage.SaveAs(
                     new FileInfo(
                         String.Concat(resultsDir.ToString(), "\\Sheets.xlsx")));
             }

@@ -18,6 +18,7 @@ namespace DataAcquisition.Features
                 .Where(e => e.Type == 6)
                 .GroupBy(e => e.Date)
                 .Select(group => group.Key)
+                .OrderBy(x=>x)
                 .ToList();
 
             for (int i = 0; i < data.Count(); i++)
@@ -28,7 +29,8 @@ namespace DataAcquisition.Features
                     Utilities.GetCurrencyRate(context, data[i]);
             }
             
-            Console.WriteLine("Currency rate statistics added");
+            Console.WriteLine("Currency Rate statistics added");
+            
             return excelPackage;
         }
     }
