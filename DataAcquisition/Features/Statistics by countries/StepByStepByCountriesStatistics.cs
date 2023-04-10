@@ -116,7 +116,7 @@ namespace DataAcquisition.Features.Statistics_by_countries
 
             for (int i = 0; i < stages.Count(); i++)
             {
-                worksheet.Cells[String.Concat("A", i + 2)].Value = stages[i].stageStart.Stage;
+                worksheet.Cells[String.Concat("A", i + 3)].Value = stages[i].stageStart.Stage;
                 
                 for (int j = 0; j < countryAmount; j++)
                 {

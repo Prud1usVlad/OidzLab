@@ -73,7 +73,7 @@ namespace DataAcquisition.Features.Statistics_by_countries
 
             for (int i = 0; i < items.Count(); i++)
             {
-                worksheet.Cells[String.Concat("A", i + 2)].Value = items[i].ItemName;
+                worksheet.Cells[String.Concat("A", i + 3)].Value = items[i].ItemName;
                 
                 for (int j = 0; j < countryAmount; j++)
                 {

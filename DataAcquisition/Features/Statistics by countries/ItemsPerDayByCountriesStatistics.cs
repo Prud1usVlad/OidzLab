@@ -61,7 +61,7 @@ namespace DataAcquisition.Features.Statistics_by_countries
 
             for (int i = 0; i < items.Count(); i++)
             {
-                worksheet.Cells[String.Concat("A", i + 2)].Value = DateOnly.FromDateTime(items[i].Date.Value).ToString();
+                worksheet.Cells[String.Concat("A", i + 3)].Value = DateOnly.FromDateTime(items[i].Date.Value).ToString();
                 
                 for (int j = 0; j < countryAmount; j++)
                 {
