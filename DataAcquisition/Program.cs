@@ -6,6 +6,9 @@ using DataAcquisition.Models;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using DataAcquisition.Util;
+using Newtonsoft.Json;
+using System.Diagnostics.Metrics;
+using System.IO;
 
 namespace DataAcquisition
 {
@@ -33,14 +36,21 @@ namespace DataAcquisition
 
             //To upload data from chosen files
             //UploadFilesToDatabase(files, start, end);
-            
+
+            var usersUpdate = new UserUpdates();
+
             //To create spreadsheet with metrics
             Console.WriteLine(DateTime.Now);
             GenarateMetricsSpreadsheet(resultsDir);
+            //usersUpdate.UploadClusteringResults(resultsDir.ToString() + "\\ClusteringCache.json");
             Console.WriteLine(DateTime.Now);
 
             //Console.ReadLine();
+
+            //usersUpdate.ApplyClustering(resultsDir.ToString());
         }
+
+
 
         public static void ClearCurrentConsoleLine()
         {
@@ -107,21 +117,21 @@ namespace DataAcquisition
                     // .AddPreliminaryByGenderStatisticsSheet(context)
                     // .AddItemsPerDayByGenderStatisticsSheet(context)
                     // By age
-                    //.AddNewUsersByAgeStatisticsSheet(context)
-                    //.AddDauByAgeStatisticsSheet(context)
-                    //.AddMauByAgeStatisticsSheet(context)
+                    .AddNewUsersByAgeStatisticsSheet(context)
+                    .AddDauByAgeStatisticsSheet(context)
+                    .AddMauByAgeStatisticsSheet(context)
                     //.AddRevenueByAgeStatisticsSheet(context)
                     //.AddStepByStepByAgeStatisticsSheet(context)
                     //.AddPreliminaryByAgeStatisticsSheet(context)
                     //.AddItemsPerDayByAgeStatisticsSheet(context)
                     // By country
-                    .AddNewUsersByCountriesStatisticsSheet(context)
-                    .AddDauByCountriesStatisticsSheet(context)
-                    .AddMauByCountriesStatisticsSheet(context)
-                    .AddRevenueByCountriesStatisticsSheet(context)
-                    .AddStepByStepByCountriesStatisticsSheet(context)
-                    .AddPreliminaryByCountriesStatisticsSheet(context)
-                    .AddItemsPerDayByCountriesStatisticsSheet(context)
+                    //.AddNewUsersByCountriesStatisticsSheet(context)
+                    //.AddDauByCountriesStatisticsSheet(context)
+                    //.AddMauByCountriesStatisticsSheet(context)
+                    //.AddRevenueByCountriesStatisticsSheet(context)
+                    //.AddStepByStepByCountriesStatisticsSheet(context)
+                    //.AddPreliminaryByCountriesStatisticsSheet(context)
+                    //.AddItemsPerDayByCountriesStatisticsSheet(context)
                     ;
 
                     excelPackage.SaveAs(
