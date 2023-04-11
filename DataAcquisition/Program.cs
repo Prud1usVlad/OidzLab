@@ -41,8 +41,10 @@ namespace DataAcquisition
 
             //To create spreadsheet with metrics
             Console.WriteLine(DateTime.Now);
-            GenarateMetricsSpreadsheet(resultsDir);
-            //usersUpdate.UploadClusteringResults(resultsDir.ToString() + "\\ClusteringCache.json");
+            //GenarateMetricsSpreadsheet(resultsDir);
+            //usersUpdate.UploadClusteringResults(resultsDir.ToString());
+            //usersUpdate.ApplyCheaterExpertiese(resultsDir.ToString());
+            usersUpdate.UploadCheatersResults(resultsDir.ToString());
             Console.WriteLine(DateTime.Now);
 
             //Console.ReadLine();

@@ -73,6 +73,50 @@ namespace DataAcquisition.Util
 
         }
 
+        public void ApplyCheaterExpertiese(string resultPath)
+        {
+            Console.WriteLine("Begin data loading");
+
+            context = new OidzDbContext();
+            context.ChangeTracker.AutoDetectChangesEnabled = false;
+            context.Database.SetCommandTimeout((int)TimeSpan.FromMinutes(30).TotalSeconds);
+
+            int amount = 10000;
+            int count = context.Users.Count();
+            double cyclesCount = count / amount;
+            List<CheaterModel> cheaters = new List<CheaterModel>();
+
+            for (double i = 0; i < cyclesCount; i++)
+            {
+                var users = context.Users
+                .Skip((int)i * amount)
+                .Take(amount)
+                .Include(u => u.Events.Where(e => e.Type == 6 || e.Type == 5 || e.Type == 4))
+                .ThenInclude(e => e.CurrencyPurchase)
+                .Include(u => u.Events.Where(e => e.Type == 6 || e.Type == 5 || e.Type == 4))
+                .ThenInclude(e => e.ItemPurchase)
+                .Include(u => u.Events.Where(e => e.Type == 6 || e.Type == 5 || e.Type == 4))
+                .ThenInclude(e => e.StageEnd)
+                .ToList()
+                ;
+
+                cheaters.AddRange(users.Select(GetCheaterModel)
+                    .Where(m => m.CurrecyRecieved < m.CurrencySpent));
+
+                Console.WriteLine($"{i} / {cyclesCount} cycles ended");
+
+                context = new OidzDbContext();
+                context.ChangeTracker.AutoDetectChangesEnabled = false;
+
+            }
+
+            JsonSerializer serializer = new JsonSerializer();
+
+            using (StreamWriter file = File.CreateText(resultPath + "\\CheatersCache.json"))
+            {
+                serializer.Serialize(file, cheaters);
+            }
+        }
 
         public void UploadClusteringResults(string path)
         {
@@ -80,7 +124,7 @@ namespace DataAcquisition.Util
             List<UserClusteringModel> rawData;
 
             Console.WriteLine("Reading data from file...");
-            using (StreamReader file = File.OpenText(path))
+            using (StreamReader file = File.OpenText(path + "//CheatersCache.json"))
             {
                 rawData = (List<UserClusteringModel>)serializer.Deserialize(file, typeof(List<UserClusteringModel>));
             }
@@ -89,13 +133,28 @@ namespace DataAcquisition.Util
             Console.WriteLine(DateTime.Now);
             Console.WriteLine("Updating db...");
 
-            UpdateUserClusters(rawData, 500);
-
-
-
+            UpdateClusters(rawData, 500);
         }
 
-        private void UpdateUserClusters(List<UserClusteringModel> rawData, int commitCount)
+        public void UploadCheatersResults(string path)
+        {
+            JsonSerializer serializer = new JsonSerializer();
+            List<CheaterModel> rawData;
+
+            Console.WriteLine("Reading data from file...");
+            using (StreamReader file = File.OpenText(path + "\\CheatersCache.json"))
+            {
+                rawData = (List<CheaterModel>)serializer.Deserialize(file, typeof(List<CheaterModel>));
+            }
+
+            Console.WriteLine("Data read!");
+            Console.WriteLine(DateTime.Now);
+            Console.WriteLine("Updating db...");
+
+            UpdateCheaters(rawData, 500);
+        }
+
+        private void UpdateClusters(List<UserClusteringModel> rawData, int commitCount)
         {
             using (var ts = EtlCore.CreateTransactionScope(TimeSpan.FromMinutes(60)))
             {
@@ -108,7 +167,7 @@ namespace DataAcquisition.Util
                     int count = 0;
                     foreach (var model in rawData)
                     {
-                        context = UpdateUser(context, model, count, commitCount, true);
+                        context = UpdateUserCluster(context, model, count, commitCount, true);
                         ++count;
                     }
 
@@ -125,7 +184,36 @@ namespace DataAcquisition.Util
             }
         }
 
-        private OidzDbContext UpdateUser(
+        private void UpdateCheaters(List<CheaterModel> rawData, int commitCount)
+        {
+            using (var ts = EtlCore.CreateTransactionScope(TimeSpan.FromMinutes(60)))
+            {
+                context = null;
+                try
+                {
+                    context = new OidzDbContext();
+                    context.ChangeTracker.AutoDetectChangesEnabled = false;
+
+                    int count = 0;
+                    foreach (var model in rawData)
+                    {
+                        context = UpdateUserIsCheater(context, model, count, commitCount, true);
+                        ++count;
+                    }
+
+                    context.SaveChanges();
+                }
+                finally
+                {
+                    if (context != null)
+                        context.Dispose();
+                }
+
+                ts.Complete();
+            }
+        }
+
+        private OidzDbContext UpdateUserCluster(
             OidzDbContext context,
             UserClusteringModel model,
             int count,
@@ -158,6 +246,71 @@ namespace DataAcquisition.Util
             }
 
             return context;
+        }
+
+        private OidzDbContext UpdateUserIsCheater(
+            OidzDbContext context,
+            CheaterModel model,
+            int count,
+            int commitCount,
+            bool recreateContext)
+        {
+
+            var user = context.Users.Find(model.Id);
+            user.IsCheater = true;
+
+            context.Update(user);
+
+            if (count % commitCount == 0)
+            {
+                context.SaveChanges();
+                if (count != 0)
+                {
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Program.ClearCurrentConsoleLine();
+                }
+                Console.WriteLine(count + " pieces processed. ");
+
+
+                if (recreateContext)
+                {
+                    context.Dispose();
+                    context = new OidzDbContext();
+                    context.ChangeTracker.AutoDetectChangesEnabled = false;
+                }
+            }
+
+            return context;
+        }
+
+        private CheaterModel GetCheaterModel(User user)
+        {
+            int recieved = 0;
+            int spent = 0;
+
+            foreach (var ev in user.Events)
+            {
+                switch(ev.Type) {
+                    case 6:
+                        recieved += (int)ev.CurrencyPurchase.Currency;
+                        break;
+
+                    case 5:
+                        spent += (int)ev.ItemPurchase.Price;
+                        break;
+
+                    case 4:
+                        recieved += (int)ev.StageEnd.Currency;
+                        break;
+                }
+            }
+
+            return new CheaterModel() 
+            { 
+                Id = user.Id,
+                CurrecyRecieved = recieved,
+                CurrencySpent = spent,
+            };
         }
     }
 }
