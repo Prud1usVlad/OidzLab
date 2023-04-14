@@ -2,6 +2,8 @@
 using DataAcquisition.Features.Statistics_by_age;
 using DataAcquisition.Features.Statistics_by_countries;
 using DataAcquisition.Features.Statistics_by_genders;
+using DataAcquisition.Features.Statistics_by_cheaters;
+using DataAcquisition.Features.Statistics_by_clusters;
 using DataAcquisition.Models;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -41,10 +43,10 @@ namespace DataAcquisition
 
             //To create spreadsheet with metrics
             Console.WriteLine(DateTime.Now);
-            //GenarateMetricsSpreadsheet(resultsDir);
+            GenarateMetricsSpreadsheet(resultsDir);
             //usersUpdate.UploadClusteringResults(resultsDir.ToString());
             //usersUpdate.ApplyCheaterExpertiese(resultsDir.ToString());
-            usersUpdate.UploadCheatersResults(resultsDir.ToString());
+            //usersUpdate.UploadCheatersResults(resultsDir.ToString());
             Console.WriteLine(DateTime.Now);
 
             //Console.ReadLine();
@@ -94,7 +96,7 @@ namespace DataAcquisition
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             var context = new OidzDbContext();
             context.ChangeTracker.AutoDetectChangesEnabled = false;
-            context.Database.SetCommandTimeout((int)TimeSpan.FromMinutes(30).TotalSeconds);
+            context.Database.SetCommandTimeout((int)TimeSpan.FromMinutes(120).TotalSeconds);
             
             //Creating excel file and filling it
             using (ExcelPackage excelPackage = new ExcelPackage())
@@ -119,9 +121,9 @@ namespace DataAcquisition
                     // .AddPreliminaryByGenderStatisticsSheet(context)
                     // .AddItemsPerDayByGenderStatisticsSheet(context)
                     // By age
-                    .AddNewUsersByAgeStatisticsSheet(context)
-                    .AddDauByAgeStatisticsSheet(context)
-                    .AddMauByAgeStatisticsSheet(context)
+                    //.AddNewUsersByAgeStatisticsSheet(context)
+                    //.AddDauByAgeStatisticsSheet(context)
+                    //.AddMauByAgeStatisticsSheet(context)
                     //.AddRevenueByAgeStatisticsSheet(context)
                     //.AddStepByStepByAgeStatisticsSheet(context)
                     //.AddPreliminaryByAgeStatisticsSheet(context)
@@ -134,9 +136,28 @@ namespace DataAcquisition
                     //.AddStepByStepByCountriesStatisticsSheet(context)
                     //.AddPreliminaryByCountriesStatisticsSheet(context)
                     //.AddItemsPerDayByCountriesStatisticsSheet(context)
+                    // By cheaters
+
+                    //.AddNewUsersByCheatersStatisticsSheet(context)
+                    //.AddDauByCheatersStatisticsSheet(context)
+                    //.AddMauByCheatersStatisticsSheet(context)
+                    //.AddRevenueByCheatersStatisticsSheet(context)
+                    //.AddStepByStepByCheatersStatisticsSheet(context)
+                    //.AddPreliminaryByCheatersStatisticsSheet(context)
+                    //.AddItemsPerDayByCheatersStatisticsSheet(context)
+
+                    // By clusters
+
+                    //.AddNewUsersByClustersStatisticsSheet(context)
+                    //.AddDauByClustersStatisticsSheet(context)
+                    //.AddMauByClustersStatisticsSheet(context)
+                    //.AddRevenueByClustersStatisticsSheet(context)
+                    //.AddStepByStepByClustersStatisticsSheet(context)
+                    .AddPreliminaryByClustersStatisticsSheet(context)
+                    ////.AddItemsPerDayByClustersStatisticsSheet(context)
                     ;
 
-                    excelPackage.SaveAs(
+                excelPackage.SaveAs(
                     new FileInfo(
                         String.Concat(resultsDir.ToString(), "\\Sheets.xlsx")));
             }
