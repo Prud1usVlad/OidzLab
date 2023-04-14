@@ -194,12 +194,12 @@ namespace DataAcquisition
             };
         }
 
-        private void SetTransactionManagerField(string fieldName, object value)
+        private static void SetTransactionManagerField(string fieldName, object value)
         {
             typeof(TransactionManager).GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, value);
         }
 
-        public TransactionScope CreateTransactionScope(TimeSpan timeout)
+        public static TransactionScope CreateTransactionScope(TimeSpan timeout)
         {
             // or for netcore / .net5+ use these names instead:
             //    s_cachedMaxTimeout

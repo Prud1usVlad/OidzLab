@@ -3,7 +3,7 @@ using OfficeOpenXml;
 
 namespace DataAcquisition.Features.Statistics_by_genders
 {
-    public static class RevenueByGenderStatistics
+    public static class RevenueByCheatersStatistics
     {
         public static ExcelPackage AddRevenueByGenderStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
