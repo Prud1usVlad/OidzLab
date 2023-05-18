@@ -4,7 +4,7 @@ using OfficeOpenXml;
 
 namespace DataAcquisition.Features.Statistics_by_genders
 {
-    public static class StepByStepByGenderStatistics
+    public static class StepByStepByCheatersStatistics
     {
         public static ExcelPackage AddStepByStepByGenderStatisticsSheet(this ExcelPackage excelPackage, OidzDbContext context)
         {
