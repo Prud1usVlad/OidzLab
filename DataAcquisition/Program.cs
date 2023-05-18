@@ -114,13 +114,14 @@ namespace DataAcquisition
                     //.AddPreliminaryByAgeStatisticsSheet(context)
                     //.AddItemsPerDayByAgeStatisticsSheet(context)
                     // By country
-                    .AddNewUsersByCountriesStatisticsSheet(context)
-                    .AddDauByCountriesStatisticsSheet(context)
-                    .AddMauByCountriesStatisticsSheet(context)
-                    .AddRevenueByCountriesStatisticsSheet(context)
-                    .AddStepByStepByCountriesStatisticsSheet(context)
-                    .AddPreliminaryByCountriesStatisticsSheet(context)
-                    .AddItemsPerDayByCountriesStatisticsSheet(context)
+                    // .AddNewUsersByCountriesStatisticsSheet(context)
+                    // .AddDauByCountriesStatisticsSheet(context)
+                    // .AddMauByCountriesStatisticsSheet(context)
+                    // .AddRevenueByCountriesStatisticsSheet(context)
+                    // .AddStepByStepByCountriesStatisticsSheet(context)
+                    // .AddPreliminaryByCountriesStatisticsSheet(context)
+                    // .AddItemsPerDayByCountriesStatisticsSheet(context)
+                    .AddUniqueUsersByStagesStatisticsSheet(context)
                     ;
 
                     excelPackage.SaveAs(
